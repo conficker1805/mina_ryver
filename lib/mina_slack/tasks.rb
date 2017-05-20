@@ -1,22 +1,13 @@
 require 'json'
 
-# ## Settings
-# Any and all of these settings can be overriden in your `deploy.rb`.
-
-# ### slack_api_token
-# Sets the slack api auth token.
 def _slack_api_token
   fetch(:slack_api_token, '')
 end
 
-# ### slack_channels
-# Sets the channels where notifications will be sent to.
 def _slack_channels
   fetch(:slack_channels, [])
 end
 
-# ### slack_username
-# Sets the notification 'from' user label
 def _slack_username
   fetch(:slack_username, 'Deploy username')
 end
@@ -37,34 +28,26 @@ def _slack_application
   fetch(:slack_application, "")
 end
 
-def _text_at_start
-  fetch(:text_at_start, "Start deploying branch #{_branch} to #{_slack_application}")
+def _slack_text_at_start
+  fetch(:slack_text_at_start, "Start deploying branch `#{_branch}` to `#{_slack_application}`.")
 end
 
-def _text_at_finished
-  text = fetch(:text_at_finished, "Finished deploying branch #{_branch} to #{_slack_application}")
+def _slack_text_at_finished
+  text = fetch(:slack_text_at_finished, "Finished deploying branch `#{_branch}` to `#{_slack_application}`.")
   text += " See it here: #{_slack_domain}" if _slack_domain != nil
   text
 end
 
-# ### slack_link_names
-# Sets the deployment author name
 set :slack_link_names, 1
 
-# ### slack_parse
-# Sets the deployment author name
 def _slack_parse
   fetch(:slack_parse, 'full')
 end
 
-# ### icon_url
-# URL to an image to use as the icon for this message
 def _slack_icon_url
   fetch(:slack_icon_url, '')
 end
 
-# ### icon_emoji
-# Sets emoji to use as the icon for this message. Overrides `slack_icon_url`
 def _slack_icon_emoji
   fetch(:slack_icon_emoji, ':slack:')
 end
@@ -73,9 +56,7 @@ def _slack_domain
   fetch(:slack_domain, nil)
 end
 
-# ## Control Tasks
 namespace :slack do
-
   # ## slack:notify_deploy_started
   desc "Send slack notification about new deploy start"
   task :notify_deploy_started => :environment do
@@ -84,7 +65,7 @@ namespace :slack do
     for channel in _slack_channels
       send_message(
         channel: channel,
-        text:    _text_at_start
+        text:    _slack_text_at_start
       )
     end
   end
@@ -97,7 +78,7 @@ namespace :slack do
     for channel in _slack_channels
       send_message(
         channel:     channel,
-        text:        _text_at_finished,
+        text:        _slack_text_at_finished,
         attachments: _slack_attachments
       )
     end
