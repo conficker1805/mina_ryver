@@ -29,11 +29,11 @@ def _slack_application
 end
 
 def _slack_text_at_start
-  fetch(:slack_text_at_start, "Start deploying branch `#{_branch}` to `#{_slack_application}`.")
+  fetch(:slack_text_at_start, "Start deploying branch \\\`#{_branch}\\\` to \\\`#{_slack_application}\\\`.")
 end
 
 def _slack_text_at_finished
-  text = fetch(:slack_text_at_finished, "Finished deploying branch `#{_branch}` to `#{_slack_application}`.")
+  text = fetch(:slack_text_at_finished, "Finished deploying branch \\\`#{_branch}\\\` to \\\`#{_slack_application}\\\`.")
   text += " See it here: #{_slack_domain}" if _slack_domain != nil
   text
 end
