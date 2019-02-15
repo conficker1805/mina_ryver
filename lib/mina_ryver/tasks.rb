@@ -32,11 +32,8 @@ namespace :ryver do
   task :notify_deploy_started => :environment do
     command  %[echo "-----> Sending start notification to Ryver"]
 
-    for channel in _ryver_channels
-      send_message(
-        channel: channel,
-        text:    _ryver_text_at_start
-      )
+    _ryver_channels.each do |channel|
+      send_msg(channel, _ryver_text_at_start)
     end
   end
 
@@ -45,15 +42,12 @@ namespace :ryver do
   task :notify_deploy_finished => :environment do
     command  %[echo "-----> Sending finish notification to Ryver"]
 
-    for channel in _ryver_channels
-      send_message(
-        channel: channel,
-        text:    _ryver_text_at_finished
-      )
+    _ryver_channels.each do |channel|
+      send_msg(channel, _ryver_text_at_finished)
     end
   end
 
-  def send_message(params = {})
-    command %[curl -X "POST" "https://scry.ryver.com/application/webhook/#{params[:channel]}" -H "Content-Type: text/plain; charset=utf-8" -d "#{params[:text]}"]
+  def send_msg(channel, message)
+    command %[curl -X "POST" "https://scry.ryver.com/application/webhook/#{channel}" -H "Content-Type: text/plain; charset=utf-8" -d "#{message}"]
   end
 end
