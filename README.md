@@ -19,25 +19,25 @@ Or install it yourself as:
 Include the recipe in your deploy.rb
 
     # config/deploy.rb
-    require 'mina/slack'
+    require 'mina/ryver'
     
 ### Setup Ryver Details
 You'll need to create a hook to push message to your channel. You should use ENV variable for this. 
-The url should be like this: https://scry.ryver.com/application/webhook/2JHY77a4Bg4An9X
+The url should be like this: https://your-domain.ryver.com/application/webhook/2JHY77a4Bg4An9X
 
     # required
     set :ryver_channels, ['2JHY77a4Bg4An9X']
     
-    ```
+    
     task :deploy do
       deploy do
-        invoke :'slack:notify_deploy_started'
+        invoke :'ryver:notify_deploy_started'
         ...
 
         to :launch do
           ...
-          invoke :'slack:notify_deploy_finished'
+          invoke :'ryver:notify_deploy_finished'
         end
       end
     end
-    ```
+    
