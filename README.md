@@ -2,7 +2,7 @@
 
 Add this line to your application's Gemfile:
 
-    gem 'mina-ryver'
+    gem 'mina_ryver'
     
 And then execute:
 
@@ -10,7 +10,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install mina-ryver
+    $ gem install mina_ryver
 
 
 ## Usage
@@ -19,15 +19,16 @@ Or install it yourself as:
 Include the recipe in your deploy.rb
 
     # config/deploy.rb
-    require 'mina/ryver'
+    require 'mina_ryver/tasks'
     
 ### Setup Ryver Details
 You'll need to create a hook to push message to your channel. You should use ENV variable for this. 
 The url should be like this: https://your-domain.ryver.com/application/webhook/2JHY77a4Bg4An9X
 
     # required
+    set :branch, `git rev-parse --abbrev-ref HEAD`.chomp
     set :ryver_channels, ['2JHY77a4Bg4An9X']
-    
+    set :ryver_application, 'production-server'
     
     task :deploy do
       deploy do
@@ -41,3 +42,4 @@ The url should be like this: https://your-domain.ryver.com/application/webhook/2
       end
     end
     
+This will push a message to your ryver application: "Start deploying branch [current_branch] to [ryver_application]" and "Finished deploying branch [current_branch] to [ryver_application]"
